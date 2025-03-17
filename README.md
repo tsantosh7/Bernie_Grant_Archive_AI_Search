@@ -21,6 +21,7 @@ This repository contains a FastAPI application that demonstrates retrieval-augme
 ```bash
 git clone https://github.com/tsantosh7/Bernie_Grant_Archive_AI_Search
 cd <Bernie_Grant_Archive_AI_Search>
+cd <Chatbot>
 ```
 
 2. **Create and activate** a virtual environment (recommended):
@@ -63,7 +64,7 @@ uvicorn main:app --reload
    - Click “AI Generated Response” to call GPT in a generation mode with context from retrieved documents.
    - The system returns an answer plus a “Source & Related Information” section listing top retrieved documents and Sources.
 
-## Project Structure
+## Application Structure
 
 - **chat_app.py** – FastAPI entry point containing:
   - Embedding & retrieval logic
