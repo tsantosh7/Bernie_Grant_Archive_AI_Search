@@ -145,18 +145,34 @@ async def query_form(request: Request, query: str = Form(...), action: str = For
         )
     elif mode == "generate":
         # We do NOT ask GPT to produce a references block at the end; only inline
+        # prompt = (
+        #     f"Context:\n{truncated_context}\n\n"
+        #     "If you use info from any document, please cite it inline in brackets "
+        #     "matching the reference IDs below:\n\n"
+        #     f"{references_string}\n"
+        #     f"Question: {user_query}\n\n"
+        #     "Please provide your answer with any inline citations as needed. "
+        #     "Please use HTML tags for formatting rather than Markdown"
+        #     "Please provide an answer based on the provided context. "
+        #     "If the context is limited, you may expand while ensuring accuracy. Accuracy is very important "
+        #     "Be very formal, polite, respectful and politically correct"
+        #     "If the question cannot be answered accurately, it's better to say so.\n\nAnswer:"
+        # )
         prompt = (
             f"Context:\n{truncated_context}\n\n"
-            "If you use info from any document, please cite it inline in brackets "
-            "matching the reference IDs below:\n\n"
-            f"{references_string}\n"
+            "If you reference information from any document, please cite it inline using brackets "
+            "corresponding to the provided reference IDs below:\n\n"
+            f"{references_string}\n\n"
             f"Question: {user_query}\n\n"
             "Please provide your answer with any inline citations as needed. "
-            "Please use HTML tags for formatting rather than Markdown"
-            "Please provide an answer based on the provided context. "
-            "If the context is limited, you may expand while ensuring accuracy. Accuracy is very important "
-            "Be very formal, polite, respectful and politically correct"
-            "If the question cannot be answered accurately, it's better to say so.\n\nAnswer:"
+            "Please provide a multilayered and insightful response, ensuring you thoroughly address the question. "
+            "Incorporate thoughtful analysis, nuance, and contextually relevant elaboration where appropriate. "
+            "Use HTML tags exclusively for formatting (do not use Markdown). "
+            "Prioritize accuracy above all, grounding your answer firmly in the provided context; however, "
+            "if necessary due to context limitations, carefully expand your explanation while maintaining factual accuracy. "
+            "Maintain a consistently formal, respectful, polite, and politically correct tone throughout. "
+            "If the provided context does not allow for an accurate or insightful response, explicitly state so clearly.\n\n"
+            "Answer:"
         )
     else:
         raise HTTPException(status_code=400, detail="Invalid mode.")
