@@ -137,7 +137,7 @@
             border-radius: 5px;
         }
         .related-item a {
-            color: #ffcc00;
+            color: #ffe100;
             text-decoration: none;
         }
         .related-item a:hover {
@@ -307,7 +307,7 @@ footer {
         <div class="left-column">
             <div class="example-questions">
                 <h3>Examples</h3>
-
+<h2>Type a question about Bernie Grant’s life or politics. Click ‘Ask’ for insights. Use citations to explore sources and related topics.</h2>
                 <div class="example-card" onclick="document.querySelector('input[name=query]').value='Was Bernie Grant interested in black business?';">
                     Was Bernie Grant interested in black business?
                 </div>
@@ -378,13 +378,13 @@ footer {
         <!-- RIGHT COLUMN (Form and Answer Content) -->
         <div class="right-column">
             <h1>Bernie Grant Archive</h1>
-            <h2>Generative AI Search</h2>
+            <h2>This AI chatbot interfaces with the Bernie Grant archive. Enter a question about Bernie Grant’s personal and political life to explore insights into the Black British diaspora</h2>
 
             <form method="post" action="/query_form">
                 <!-- Preserve query value after submission -->
-                <input type="text" name="query" placeholder="Enter your query..." value="{{ query|default('') }}" required>
+                <input type="text" name="query" placeholder="What do you want to learn about today?" value="{{ query|default('') }}" required>
                 <div class="button-container">
-                    <button type="submit" name="action" value="generated">AI Generated Response</button>
+                    <button type="submit" name="action" value="generated">Ask</button>
                 </div>
             </form>
 
@@ -431,7 +431,7 @@ footer {
         <img id="lightbox-img">
     </div>
 
-<!--    <footer>-->
+<!--    <footer style="display: flex; gap: 10px;">-->
 <!--        <img src="/static/logo.png" alt="Logo">-->
 <!--        <img src="/static/bglogo.png" alt="BG_Logo">-->
 <!--        <div>-->
