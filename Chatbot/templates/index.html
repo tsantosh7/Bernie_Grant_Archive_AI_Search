@@ -293,28 +293,48 @@ footer {
 }
  /* Scroll to Top Button */
     #scrollToTopBtn {
-        display: none; /* Hidden by default */
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #555;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        z-index: 1000;
-    }
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #663333; /* Match your sepia theme */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
-    #scrollToTopBtn:hover {
-        background-color: #777;
-    }
+#scrollToTopBtn:hover {
+    background-color: #3f3f3f;
+    transform: scale(1.1);
+}
+        .citation {
+    font-size: 0.8em;
+    color: grey;
+    vertical-align: super;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+}
 
-    @media (max-width: 768px) {
-        #scrollToTopBtn {
-            display: block;
-        }
+.citation:hover::after {
+    content: " 🔗"; /* Adds a link icon on hover */
+    font-size: 0.8em;
+    color: blue;
+}
+
+.citation-link {
+    text-decoration: none;
+    color: black;
+}
+
+.citation-link:hover {
+    text-decoration: underline;
+}
     }
     </style>
     <script>
@@ -450,14 +470,14 @@ footer {
                 <h3>Sources & Related Information:</h3>
                 {% for doc in related_information %}
                 <div class="related-item">
-                    <p>
-                        <!-- Show the same ref_id in brackets so the user sees [1], [2], etc. -->
-                        <strong>[{{ doc.ref_id }}]
-                            <a href="{{ doc.source }}" target="_blank">
-                                {{ doc.Name }}
-                            </a>
-                        </strong>
-                    </p>
+                   <p>
+    <strong>
+        <span class="citation" id="ref{{ doc.ref_id }}">[{{ doc.ref_id }}]</span>
+        <a href="{{ doc.source }}" target="_blank" class="citation-link">
+            {{ doc.Name }}
+        </a>
+    </strong>
+</p>
                     <p>{{ doc.snippet }}</p>
 
                     {% if doc.images %}
@@ -514,6 +534,18 @@ footer {
     </div>
 </footer>
 
+<button id="scrollToTopBtn" onclick="scrollToTop()">↑</button>
+    window.onscroll = function () {
+    let btn = document.getElementById("scrollToTopBtn");
+    if (document.documentElement.scrollTop > 100) {
+        btn.style.display = "block";
+    } else {
+        btn.style.display = "none";
+    }
+};
 
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
 </body>
 </html>
