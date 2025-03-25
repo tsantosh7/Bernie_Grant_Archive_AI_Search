@@ -109,7 +109,20 @@ button {
 button:hover {
   background: gray;
 }
-
+#upButton {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #663333;
+  color: #ffffcc;
+  padding: 15px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+}
 /* Answer card styling */
 .answer-card {
   background: #444;
@@ -264,27 +277,7 @@ footer {
   }
 }
 
-/* Scroll to Top Button */
-#scrollToTopBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background-color: #663333;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 24px;
-  cursor: pointer;
-  display: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
 
-#scrollToTopBtn:hover {
-  background-color: #3f3f3f;
-  transform: scale(1.1);
-}
 
 .citation {
   font-size: 0.8em;

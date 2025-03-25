@@ -9,20 +9,17 @@ function closeLightbox() {
 
 // Show or hide the scroll-to-top button based on scroll position
 window.addEventListener('scroll', function () {
-  const button = document.getElementById("scrollToTopBtn");
-  if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
-    button.style.display = "block";
+  const upButton = document.getElementById("upButton");
+  if (window.scrollY > 100) {
+    upButton.style.display = "block";
   } else {
-    button.style.display = "none";
+    upButton.style.display = "none";
   }
 });
 
-// Scroll to top function with smooth behavior
+// Function to scroll to the top smoothly
 function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  document.getElementById("top").scrollIntoView({ behavior: 'smooth' });
 }
 
 // Optional smooth scroll for citation links that jump to sources on the same page
