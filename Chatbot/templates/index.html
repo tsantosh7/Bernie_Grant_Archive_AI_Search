@@ -1,519 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bernie Grant Archive - Generative AI Search</title>
-    <style>
-        body {
-            background-color: #3f3f3f;
-            color: white;
-            font-family: 'Outfit', sans-serif;
-            margin: 0;
-            padding: 0; /* Removed top/bottom body padding so content aligns better */
-        }
-
-        h1 {
-            color: #ffffcc;
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 20px;
-        }
-        h2 {
-            color: #ffffff;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-h2, button {
-    color: #ffffff;
-    font-size: 1rem;
-    text-align: center;
-    font-family: "Outfit", sans-serif; 
-}
-        /* Container to hold both left column and right column */
-        .main-container {
-            display: flex;      /* Side by side layout */
-            margin: 20px;       /* Some padding around main content */
-            gap: 20px;          /* Spacing between columns */
-        }
-
-        /* Left column for examples */
-        .left-column {
-            width: 25%;         /* Adjust width as desired */
-            min-width: 200px;   /* Ensure it doesn't shrink too much */
-            /* Set a max height and enable scrolling */
-            max-height: 80vh;   /* or use a fixed pixel height, e.g., 600px */
-            overflow-y: auto;
-        }
-        /* Right column for form and answer content */
-        .right-column {
-            width: 75%;
-        }
-
-        /* Example Questions (left column) */
-        .example-questions {
-            background: #444;
-            border-radius: 5px;
-            padding: 10px;
-        }
-        .example-questions h3 {
-            color: #ffffcc;
-            margin: 0 0 10px 0;
-        }
-        .example-card {
-            background: #555;
-            /*background: transparent;*/
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-            text-align: center;
-            cursor: pointer;
-        }
-        .example-card:hover {
-            background: #666;
-        }
-
-        /* Form styling (right column) */
-        form {
-            text-align: center;
-            margin-top: 20px;  /* space above form if desired */
-        }
-        input {
-            width: 80%;
-            max-width: 600px;         /* optional: prevent growing too wide on large screens */
-            padding: 10px;
-            background-color: #333333;
-            color: #ffffff;
-            border: 1px solid gray;
-            border-radius: 5px;
-            margin: 10px auto;  /* centers the input horizontally */
-            display: block;     /* ensures margin auto works horizontally */
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-        button {
-            background: transparent;
-            border: 1px solid gray;
-            color: white;
-            padding: 10px 15px;
-            margin: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        button:hover {
-            background: gray;
-        }
-
-        /* Answer card styling */
-        .answer-card {
-            background: #444;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 8px;
-            text-align: left;
-            max-width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .answer-card h3 {
-            color: #ffffcc;
-        }
-        .answer-card p {
-            white-space: pre-line;
-        }
-
-        /* Related info styling */
-        .related-info {
-            margin-top: 30px;
-            text-align: left;
-            max-width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .related-info h3 {
-            color: #ffffcc;
-        }
-        .related-item {
-            background: #444;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-        .related-item a {
-            color: #ffe100;
-            text-decoration: none;
-        }
-        .related-item a:hover {
-            text-decoration: underline;
-        }
-
-        /* Lightbox images */
-        .images-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .images-container img {
-            width: 100px;
-            height: auto;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .images-container img:hover {
-            transform: scale(1.1);
-        }
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        /* Footer styling */
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            border-top: 1px solid gray;
-            text-align: left;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            background: #3f3f3f;
-        }
-        footer img {
-            height: 60px;
-            margin-right: 15px;
-        }
-        footer p {
-            margin: 3px 0;
-        }
-        a{
-            color: #ffffcc;
-        }
-
-        /* Base styling for footer */
-footer {
-    padding: 20px;
-    border-top: 1px solid gray;
-    background: #3f3f3f;
-    text-align: center; /* Center everything by default */
-}
-
-/* Images container */
-.footer-images {
-    margin-bottom: 10px;
-}
-
-/* Footer images */
-.footer-images img {
-    height: 60px;
-    margin-right: 15px;
-}
-
-/* Last image can have no margin-right, etc. */
-.footer-images img:last-child {
-    margin-right: 0;
-}
-
-/* Footer text wrapper for better control of width */
-.footer-text {
-    max-width: 800px;     /* Prevent the text from stretching too wide */
-    margin: 0 auto;       /* Center the text block horizontally */
-    text-align: left;     /* Left-align the paragraphs if you prefer */
-    /*color: #ffffcc;*/
-}
-
-/* Paragraph spacing and link color */
-.footer-text p {
-    margin: 0.5em 0;
-}
-.footer-text a {
-    color: #ffffcc;
-    text-decoration: none;
-}
-.footer-text a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive adjustments for smaller screens */
-@media (max-width: 600px) {
-    .footer-images img {
-        height: 40px;       /* Shrink images on smaller devices */
-        margin-right: 8px;
-    }
-
-    .footer-text {
-        padding: 0 10px;    /* Add a bit of side padding so text isn't touching edges */
-        text-align: center; /* Center text on very narrow screens if you want */
-    }
-}
-
-
-        @media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-        gap: 0; /* remove or reduce gap for mobile */
-    }
-
-    .left-column {
-    order: 2;
-    }
-
-    .right-column {
-        order: 1;
-        width: 100% !important; /* force full width on small screens */
-        max-height: none;       /* remove fixed height constraints on mobile */
-        margin: 0;             /* remove extra margins if necessary */
-    }
-
-    /* If you want the right column (answers) to appear above the examples on mobile,
-       you can swap the order like this:
-
-    .right-column {
-        order: 1;
-    }
-    .left-column {
-        order: 2;
-    }
-
-    */
-}
- /* Scroll to Top Button */
-    #scrollToTopBtn {
-        display: none; /* Hidden by default */
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #555;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        z-index: 1000;
-    }
-
-    #scrollToTopBtn:hover {
-        background-color: #777;
-    }
-
-    @media (max-width: 768px) {
-        #scrollToTopBtn {
-            display: block;
-        }
-    }
-    </style>
-    <script>
-        function openLightbox(src) {
-            document.getElementById('lightbox-img').src = src;
-            document.getElementById('lightbox').style.display = 'flex';
-        }
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-        }
-         // Show or hide button on scroll
-    window.onscroll = function () {
-        var button = document.getElementById("scrollToTopBtn");
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            button.style.display = "block";
-        } else {
-            button.style.display = "none";
-        }
-    };
-
-    // Scroll to top function
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bernie Grant Archive - Generative AI Search</title>
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Link to external JS (loaded with defer so it runs after the DOM is ready) -->
+  <script src="/static/js/script.js" defer></script>
+>>>>>>> e11b2e7 (css, js folders created)
 </head>
 <body>
-
-
-    <!-- Main container holding left and right columns -->
-    <div class="main-container">
-
-        <!-- LEFT COLUMN (Example Questions) -->
-        <div class="left-column">
-            <div class="example-questions">
-                <p></p>
-<h3>Example questions: </h3>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Was Bernie Grant interested in black business?';">
-                    Was Bernie Grant interested in black business?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Why did he want to build a black arts centre?';">
-                    Why did he want to build a black arts centre?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Did Bernie Grant experience racism in Parliament itself?';">
-                    Did Bernie Grant experience racism in Parliament itself?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='How did the black community in the UK fight against racism in the criminal justice system?';">
-                    How did the black community in the UK fight against racism in the criminal justice system?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Was the criminal justice system fair 1980 - 2000?';">
-                    Was the criminal justice system fair 1980 - 2000?
-                </div>
-<!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Why was Bernie Grant such a controversial figure in the 1980&#39;s?';">-->
-<!--                    Why was Bernie Grant such a controversial figure in the 1980's?-->
-<!--                </div>-->
-<!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Was anyone ever convicted for the death of Joy Gardner?';">-->
-<!--                    Was anyone ever convicted for the death of Joy Gardner?-->
-<!--                </div>-->
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What is the Reparations Movement and how did it grow in the UK?';">
-                    What is the Reparations Movement and how did it grow in the UK?
-                </div>
-<!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Who was involved in the African Reparations Movement?';">-->
-<!--                    Who was involved in the African Reparations Movement?-->
-<!--                </div>-->
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What were some of the demands of the Reparations movement?';">
-                    What were some of the demands of the Reparations movement?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='Who were Britains first black members of Parliament, and when and how were they elected?';">
-                    Who were Britain's first black members of Parliament, and when and how were they elected?
-                </div>
-<!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='How were black politicians connected with international events?';">-->
-<!--                    How were black politicians connected with international events?-->
-<!--                </div>-->
-<!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What happened on Broadwater Farm estate in 1985, and why?';">-->
-<!--                    What happened on Broadwater Farm estate in 1985, and why?-->
-<!--                </div>-->
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was Bernie Grant\'s reaction to the Broadwater Farm uprising?';">
-                    What was Bernie Grant's reaction to the Broadwater Farm uprising?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was Black Sections and why was it founded?';">
-                    What was Black Sections and why was it founded?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was the Labour Party’s reaction to Black Sections?';">
-                    What was the Labour Party’s reaction to Black Sections?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What were the statistics for Black people and stop and search police powers in the 1990s?';">
-                    What were the statistics for Black people and stop and search police powers in the 1990s?
-                </div>
- <!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='How did the black community support the Caribbean during hurricanes and other natural disasters?';">-->
-<!--                    How did the black community support the Caribbean during hurricanes and other natural disasters?-->
-<!--                </div>-->
-<!--                <div class="example-card" onclick="document.querySelector('input[name=query]').value='How did Bernie Grant champion black culture in Britain?';">-->
-<!--                    How did Bernie Grant champion black culture in Britain?-->
-<!--                </div>-->
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was the Parliamentary Black Caucus?';">
-                    What was the Parliamentary Black Caucus?
-                </div>
-                <div class="example-card" onclick="document.querySelector('input[name=query]').value='What issues did Bernie Grant raise in parliament?';">
-                    What issues did Bernie Grant raise in parliament?
-                </div>
-
-            </div>
+  <!-- Main container holding left and right columns -->
+  <div class="main-container">
+    <!-- LEFT COLUMN (Example Questions) -->
+    <div class="left-column">
+      <div class="example-questions">
+        <h3>Example questions:</h3>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='Was Bernie Grant interested in black business?';">
+          Was Bernie Grant interested in black business?
         </div>
-
-        <!-- RIGHT COLUMN (Form and Answer Content) -->
-        <div class="right-column">
-            <h1>Bernie Grant Archive</h1>
-            <h2>This AI chatbot interfaces with the Bernie Grant archive. Enter a question about Bernie Grant’s personal and political life to explore insights into the Black British diaspora. Click ‘Ask’ for insights. Use citations to explore sources and related topics.</h2>
-
-            <form method="post" action="/query_form">
-                <!-- Preserve query value after submission -->
-                <input type="text" name="query" placeholder="What do you want to learn about today?" value="{{ query|default('') }}" required>
-                <div class="button-container">
-                    <button type="submit" name="action" value="generated">Ask</button>
-                     <button type="button" onclick="document.querySelector('input[name=query]').value='';">Clear</button>
-                </div>
-            </form>
-
-            {% if answer %}
-            <div class="answer-card">
-                <!-- <h3>Answer:</h3> -->
-<!--                <p>{{ answer }}</p>-->
-            <p>{{ answer|safe }}</p>
-
-            </div>
-
-
-           {% if related_information %}
-            <div class="related-info">
-                <h3>Sources & Related Information:</h3>
-                {% for doc in related_information %}
-                <div class="related-item">
-                    <p>
-                        <!-- Show the same ref_id in brackets so the user sees [1], [2], etc. -->
-                        <strong>[{{ doc.ref_id }}]
-                            <a href="{{ doc.source }}" target="_blank">
-                                {{ doc.Name }}
-                            </a>
-                        </strong>
-                    </p>
-                    <p>{{ doc.snippet }}</p>
-
-                    {% if doc.images %}
-                    <div class="images-container">
-                        {% for image in doc.images %}
-                        <img src="/static/{{ image }}" onclick="openLightbox('/static/{{ image }}')">
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% endif %}
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='Why did he want to build a black arts centre?';">
+          Why did he want to build a black arts centre?
         </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='Did Bernie Grant experience racism in Parliament itself?';">
+          Did Bernie Grant experience racism in Parliament itself?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='How did the black community in the UK fight against racism in the criminal justice system?';">
+          How did the black community in the UK fight against racism in the criminal justice system?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='Was the criminal justice system fair 1980 - 2000?';">
+          Was the criminal justice system fair 1980 - 2000?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What is the Reparations Movement and how did it grow in the UK?';">
+          What is the Reparations Movement and how did it grow in the UK?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What were some of the demands of the Reparations movement?';">
+          What were some of the demands of the Reparations movement?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='Who were Britain&apos;s first black members of Parliament, and when and how were they elected?';">
+          Who were Britain’s first black members of Parliament, and when and how were they elected?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was Bernie Grant&apos;s reaction to the Broadwater Farm uprising?';">
+          What was Bernie Grant's reaction to the Broadwater Farm uprising?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was Black Sections and why was it founded?';">
+          What was Black Sections and why was it founded?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was the Labour Party’s reaction to Black Sections?';">
+          What was the Labour Party’s reaction to Black Sections?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What were the statistics for Black people and stop and search police powers in the 1990s?';">
+          What were the statistics for Black people and stop and search police powers in the 1990s?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What was the Parliamentary Black Caucus?';">
+          What was the Parliamentary Black Caucus?
+        </div>
+        <div class="example-card" onclick="document.querySelector('input[name=query]').value='What issues did Bernie Grant raise in parliament?';">
+          What issues did Bernie Grant raise in parliament?
+        </div>
+      </div>
     </div>
 
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <img id="lightbox-img">
+    <!-- RIGHT COLUMN (Form and Answer Content) -->
+    <div class="right-column">
+      <h1>Bernie Grant Archive</h1>
+      <h2>This AI chatbot interfaces with the Bernie Grant archive. Enter a question about Bernie Grant’s personal and political life to explore insights into the Black British diaspora. Click ‘Ask’ for insights. Use citations to explore sources and related topics.</h2>
+
+      <form method="post" action="/query_form">
+        <input type="text" name="query" placeholder="What do you want to learn about today?" value="{{ query|default('') }}" required>
+        <div class="button-container">
+          <button type="submit" name="action" value="generated">Ask</button>
+          <button type="button" onclick="document.querySelector('input[name=query]').value='';">Clear</button>
+        </div>
+      </form>
+
+      {% if answer %}
+      <div class="answer-card">
+        <p>{{ answer|safe }}</p>
+      </div>
+
+      {% if related_information %}
+      <div class="related-info">
+        <h3>Sources &amp; Related Information:</h3>
+        {% for doc in related_information %}
+        <div class="related-item">
+          <p>
+            <strong>
+              <span class="citation" id="ref{{ doc.ref_id }}">[{{ doc.ref_id }}]</span>
+              <!-- Citation links now jump to the source element at the bottom -->
+              <a href="#source-{{ doc.ref_id }}" class="citation-link">
+                {{ doc.Name }}
+              </a>
+            </strong>
+          </p>
+          <p>{{ doc.snippet }}</p>
+          {% if doc.images %}
+          <div class="images-container">
+            {% for image in doc.images %}
+            <img src="/static/{{ image }}" onclick="openLightbox('/static/{{ image }}')">
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endif %}
     </div>
+  </div>
 
-<!--    <footer style="display: flex; gap: 10px;">-->
-<!--        <img src="/static/logo.png" alt="Logo">-->
-<!--        <img src="/static/bglogo.png" alt="BG_Logo">-->
-<!--        <div>-->
-<!--            <p>&copy; 2025 Middlesex University | Bernie Grant Archive. Some rights reserved.</p>-->
-<!--            Privacy Policy |-->
-<!--  <a href="https://ai.mdx.ac.uk/projects.html#BGRAG" target="_blank">-->
-<!--    About the Project-->
-<!--  </a>-->
-<!--            <p>The <strong>Generative AI Search for Digital Archives </strong>is designed to provide curious archive users with a birds-eye view of historical records, speeches, and key initiatives.  By leveraging AI-powered retrieval methods, this system fosters engagement with archival materials and expands research possibilities.  By introducing engaging narratives it hopes to stimulate curiosity and encourage users to search for more detailed information within the archive.  The project is committed to improving accessibility to diasporic histories, fostering collaborations with other diasporic archives and collections.  We want to connect communities with their heritage and help negotiate difference using digital technology. <strong> This initiative seeks to evolve by collaborating with additional collections, broadening the scope of accessible historical narratives while maintaining accuracy and relevance.</strong></p>-->
-<!--        </div>-->
-<!--    </footer>-->
+  <!-- Lightbox container -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" alt="Lightbox Image">
+  </div>
 
-<footer>
+  <footer>
     <div class="footer-images">
-        <img src="/static/logo.png" alt="Logo">
-        <img src="/static/bglogo.png" alt="BG_Logo">
+      <img src="/static/logo.png" alt="Logo">
+      <img src="/static/bglogo.png" alt="BG_Logo">
     </div>
     <div class="footer-text">
-        <p>&copy; 2025 Middlesex University | Bernie Grant Archive. Some rights reserved.</p>
-        Privacy Policy |
-        <a href="https://ai.mdx.ac.uk/projects.html#BGRAG" target="_blank">About the Project</a>
-        <p>The <strong>Generative AI Search for Digital Archives </strong>is designed to provide curious
-            archive users with a birds-eye view of historical records, speeches, and key initiatives.
-            By leveraging AI-powered retrieval methods, this system fosters engagement with archival
-            materials and expands research possibilities.  By introducing engaging narratives it hopes
-            to stimulate curiosity and encourage users to search for more detailed information within the archive.
-            The project is committed to improving accessibility to diasporic histories, fostering
-            collaborations with other diasporic archives and collections.
-            We want to connect communities with their heritage and help negotiate difference using digital technology.
-            <strong> This initiative seeks to evolve by collaborating with additional collections, broadening the
-                scope of accessible historical narratives while maintaining accuracy and relevance.</strong></p>
+      <p>&copy; 2025 Middlesex University | Bernie Grant Archive. Some rights reserved.</p>
+      Privacy Policy | <a href="https://ai.mdx.ac.uk/projects.html#BGRAG" target="_blank">About the Project</a>
+      <p>The <strong>Generative AI Search for Digital Archives</strong> is designed to provide curious archive users with a birds-eye view of historical records, speeches, and key initiatives. By leveraging AI-powered retrieval methods, this system fosters engagement with archival materials and expands research possibilities. By introducing engaging narratives it hopes to stimulate curiosity and encourage users to search for more detailed information within the archive. The project is committed to improving accessibility to diasporic histories, fostering collaborations with other diasporic archives and collections. We want to connect communities with their heritage and help negotiate difference using digital technology. <strong>This initiative seeks to evolve by collaborating with additional collections, broadening the scope of accessible historical narratives while maintaining accuracy and relevance.</strong></p>
     </div>
-</footer>
+  </footer>
 
-
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTopBtn" onclick="scrollToTop()">↑</button>
 </body>
 </html>
+
+
+
+
+
+
+
+
